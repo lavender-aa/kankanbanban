@@ -1,0 +1,8 @@
+# whitelist gitignore
+*
+!*/
+
+
+!.gitignore
+!README.md
+
