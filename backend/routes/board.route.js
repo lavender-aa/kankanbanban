@@ -1,6 +1,5 @@
 import express from 'express'
-
-import { createBoard, deleteBoard, getBoards, replaceBoard } from '../controllers/product.controller.js'
+import { createBoard, deleteBoard, getBoards, replaceBoard } from '../controllers/board.controller.js'
 
 const router = express.Router()
 

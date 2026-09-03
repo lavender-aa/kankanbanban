@@ -1,15 +1,15 @@
-import Board from '../models/Board.model.js'
+import List from '../models/List.model.js'
 import mongoose from 'mongoose'
 
-export const getBoards = async (req, res) => {
+export const getLists = async (req, res) => {
     try {
-        const boards = await Board.find({})
+        const lists = await List.find({})
         res.status(200).json({
             success: true,
-            data: boards,
+            data: lists,
         })
     } catch (error) {
-        console.log('error in fetching boards')
+        console.log('error in fetching lists')
         res.status(500).json({
             success: false,
             message: 'server error',
@@ -17,23 +17,23 @@ export const getBoards = async (req, res) => {
     }
 }
 
-export const createBoard = async (req, res) => {
-    const board = req.body
+export const createList = async (req, res) => {
+    const list = req.body
 
-    if(!board.name) {
+    if(!list.name || !list.status) {
         return res.status(400).json({
             success: false,
             message: 'at least one required field missing',
         })
     }
 
-    const newBoard = new Board(board)
+    const newList = new List(list)
 
     try {
-        await newBoard.save()
+        await newList.save()
         res.status(201).json({
             success: true,
-            data: newBoard,
+            data: newList,
         })
     } catch (error) {
         console.error('error in board creation: ', error.message)
@@ -44,23 +44,23 @@ export const createBoard = async (req, res) => {
     }
 }
 
-export const replaceBoard = async (req, res) => {
+export const replaceList = async (req, res) => {
     const {id} = req.params
 
-    const board = req.body
+    const list = req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({
             success: false,
-            message: 'invalid board id',
+            message: 'invalid list id',
         })
     }
 
     try {
-        const updatedBoard = await Board.findByIdAndUpdate(id, board, {new: true})
+        const updatedList = await List.findByIdAndUpdate(id, list, {new: true})
         res.status(200).json({
             success: true,
-            data: updatedBoard,
+            data: updatedList,
         })
     } catch (error) {
         res.status(500).json({
@@ -70,14 +70,14 @@ export const replaceBoard = async (req, res) => {
     }
 }
 
-export const deleteBoard = async (req, res) => {
+export const deleteList = async (req, res) => {
     const {id} = req.params
-    
+
     try {
-        await Board.findByIdAndDelete(id)
+        await List.findByIdAndDelete(id)
         res.status(200).json({
             success: true,
-            message: 'board deleted'
+            message: 'list deleted'
         })
     } catch (error) {
         res.status(404).json({
