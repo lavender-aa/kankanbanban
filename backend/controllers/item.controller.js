@@ -1,66 +1,67 @@
-import Board from '../models/Board.model.js'
+import Item from '../models/Item.model.js'
 import mongoose from 'mongoose'
 
-export const getBoards = async (req, res) => {
+export const getItems = async (req, res) => {
     try {
-        const boards = await Board.find({})
+        const items = await Item.find({})
         res.status(200).json({
             success: true,
-            data: boards,
+            data: items,
         })
     } catch (error) {
-        console.log('error in fetching boards')
+        console.log('error in fetching items')
         res.status(500).json({
             success: false,
-            message: 'server error',
+            message: 'server error'
         })
     }
 }
 
-export const createBoard = async (req, res) => {
-    const board = req.body
+export const createItem = async (req, res) => {
+    const item = req.body
 
-    if(!board.name) {
+    if(!item.name || !item.status) {
         return res.status(400).json({
             success: false,
             message: 'at least one required field missing',
         })
     }
 
-    const newBoard = new Board(board)
+    const newItem = new Item(item)
 
     try {
-        await newBoard.save()
+        await newItem.save()
         res.status(201).json({
             success: true,
-            data: newBoard,
+            data: newItem,
         })
     } catch (error) {
-        console.error('error in board creation: ', error.message)
+        console.log('error in item creation: ', error.message)
         res.status(500).json({
             success: false,
-            message: 'server error',
+            message: 'server error'
         })
     }
 }
 
-export const replaceBoard = async (req, res) => {
+export const replaceItem = async (req, res) => {
     const {id} = req.params
 
-    const board = req.body
+    const item = req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({
             success: false,
-            message: 'invalid board id',
+            message: 'invalid item id'
         })
     }
 
+
     try {
-        const updatedBoard = await Board.findByIdAndUpdate(id, board, {new: true})
+        const updatedItem = await Item.findByIdAndUpdate(id, item, {new: true})
         res.status(200).json({
             success: true,
-            data: updatedBoard,
+            data: updatedItem,
         })
     } catch (error) {
         res.status(500).json({
@@ -70,19 +71,26 @@ export const replaceBoard = async (req, res) => {
     }
 }
 
-export const deleteBoard = async (req, res) => {
+export const deleteItem = async (req, res) => {
     const {id} = req.params
-    
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ 
+            success: false,
+            message: 'invalid item id',
+        })
+    }
+
     try {
-        await Board.findByIdAndDelete(id)
+        await Item.findByIdAndDelete(id)
         res.status(200).json({
             success: true,
-            message: 'board deleted'
+            message: 'item deleted',
         })
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'server error'
+            message: 'server error',
         })
     }
 }
