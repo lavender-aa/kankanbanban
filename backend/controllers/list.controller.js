@@ -73,6 +73,13 @@ export const replaceList = async (req, res) => {
 export const deleteList = async (req, res) => {
     const {id} = req.params
 
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({
+            success: false,
+            message: 'invalid list id',
+        })
+    }
+
     try {
         await List.findByIdAndDelete(id)
         res.status(200).json({
@@ -80,9 +87,9 @@ export const deleteList = async (req, res) => {
             message: 'list deleted'
         })
     } catch (error) {
-        res.status(404).json({
+        res.status(500).json({
             success: false,
-            message: 'board not found'
+            message: 'server error'
         })
     }
 }

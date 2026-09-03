@@ -72,6 +72,13 @@ export const replaceBoard = async (req, res) => {
 
 export const deleteBoard = async (req, res) => {
     const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({
+            success: false,
+            message: 'invalid board id',
+        })
+    }    
     
     try {
         await Board.findByIdAndDelete(id)
