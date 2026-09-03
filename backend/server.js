@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import { conncect_db } from './config/db.js'
 
 import boardRoutes from './routes/board.route.js'
+// import listRoutes from './routes/list.route.js'
+// import itemRoutes from './routes/list.route.js'
 
 dotenv.config()
 
