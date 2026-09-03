@@ -11,6 +11,8 @@ const app = express()
 app.use(express.json())
 
 app.use('/api/boards', boardRoutes)
+// app.use('/api/lists', listRoutes)
+// app.use('/api/items', itemRoutes)
 
 app.listen(5000, () => {
     conncect_db()

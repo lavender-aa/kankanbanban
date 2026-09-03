@@ -5,15 +5,10 @@ const listSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    board: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Board',
+    status: {
+        type: String,
+        enum: ['todo', 'started', 'completed', 'cancelled'],
         required: true,
-    },
-    type: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Status',
-        required: false,
     }
 })
 

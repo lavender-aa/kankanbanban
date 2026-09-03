@@ -5,13 +5,10 @@ const itemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    list: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'List',
-    },
     status: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Status'
+        type: String,
+        enum: ['todo', 'started', 'completed', 'cancelled'],
+        required: true,
     }
 })
 
