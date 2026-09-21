@@ -9,6 +9,7 @@ import itemRoutes from './routes/list.route.js'
 dotenv.config()
 
 const app = express()
+const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 app.use('/api/boards', boardRoutes)
@@ -19,3 +20,6 @@ app.listen(5000, () => {
     conncect_db()
     console.log('server started at http://localhost:5000')
 })
+
+// video: https://www.youtube.com/watch?v=O3BUHwfHf84
+// timestamp left off: 54:00
