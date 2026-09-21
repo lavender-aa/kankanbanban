@@ -16,10 +16,7 @@ app.use('/api/boards', boardRoutes)
 app.use('/api/lists', listRoutes)
 app.use('/api/items', itemRoutes)
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     conncect_db()
-    console.log('server started at http://localhost:5000')
+    console.log('server started at http://localhost:' + PORT)
 })
-
-// video: https://www.youtube.com/watch?v=O3BUHwfHf84
-// timestamp left off: 54:00
