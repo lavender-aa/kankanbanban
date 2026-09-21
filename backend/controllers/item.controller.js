@@ -1,5 +1,4 @@
 import Item from '../models/Item.model.js'
-import Board from '../models/Board.model.js'
 import mongoose from 'mongoose'
 
 export const getItems = async (req, res) => {
@@ -25,6 +24,14 @@ export const createItem = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: 'at least one required field missing',
+        })
+    }
+
+    // check that child_board_id is valid
+    if(!mongoose.Types.ObjectId.isValid(item.child_board_id)) {
+        return res.status(400).json({
+            success: false,
+            message: 'provided child board ID is not valid',
         })
     }
 
@@ -58,7 +65,7 @@ export const replaceItem = async (req, res) => {
     }
 
     // ensure Board reference is valid (if exists)
-    if(!Board.isValid(item.child_board_id)) {
+    if(!mongoose.Types.ObjectId.isValid(item.child_board_id)) {
         return res.status(404).json({
             success: false,
             message: 'board pointed-to by child_board_id does not exist'
@@ -83,6 +90,9 @@ export const replaceItem = async (req, res) => {
 export const deleteItem = async (req, res) => {
     const {id} = req.params
 
+    console.log("id: " + id)
+    console.log("is valid: " + mongoose.Types.ObjectId.isValid(id))
+
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ 
             success: false,
@@ -92,6 +102,7 @@ export const deleteItem = async (req, res) => {
 
     try {
         await Item.findByIdAndDelete(id)
+        // await Item.deleteOne({ "_id": id})
         res.status(200).json({
             success: true,
             message: 'item deleted',
