@@ -1,4 +1,5 @@
 import Item from '../models/Item.model.js'
+import Board from '../models/Board.model.js'
 import mongoose from 'mongoose'
 
 export const getItems = async (req, res) => {
@@ -53,6 +54,14 @@ export const replaceItem = async (req, res) => {
         return res.status(404).json({
             success: false,
             message: 'invalid item id'
+        })
+    }
+
+    // ensure Board reference is valid (if exists)
+    if(!Board.isValid(item.child_board_id)) {
+        return res.status(404).json({
+            success: false,
+            message: 'board pointed-to by child_board_id does not exist'
         })
     }
 
